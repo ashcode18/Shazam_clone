@@ -5,7 +5,7 @@ import wave
 import librosa
 import librosa.display
 from scipy.ndimage import maximum_filter
-
+import hashlib
 
 songs_hash={}
 def takingAudioInput(name,to_identify=False):
@@ -102,7 +102,8 @@ def takingAudioInput(name,to_identify=False):
         plt.title('Spectogram')
         plt.show()
     peaks=extract_peaks(S_db)
-    fingerprint=hash(tuple(peaks))
+    peaks_str=str(peaks).encode()
+    fingerprint=hashlib.sha1(peaks_str).hexdigest()
     if to_identify:
         try:
             print(songs_hash[fingerprint])
